@@ -50,6 +50,11 @@ model area_cultivo {
   ativo                  Boolean
   umidade_min            Float?
   umidade_max            Float?
+  co2_ar                 Float?
+  ph_agua                Float?
+  nutrientes_agua        Float?
+  temperatura            Float?
+  umidade_ar             Float?
   tempo_irrigacao_padrao Int?
   horarios_permitidos    Json?
   saco_cultivo           saco_cultivo[]
@@ -92,7 +97,6 @@ model leitura_sensor {
   area_cultivo_id          Int
   umidade_substrato        Float
   umidade_ambiente         Float
-  temperatura              Float
   timestamp                DateTime              @default(now())
 }
 

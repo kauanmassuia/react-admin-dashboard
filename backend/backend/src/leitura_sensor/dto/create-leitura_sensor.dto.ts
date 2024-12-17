@@ -16,8 +16,4 @@ export class CreateLeituraSensorDto {
   @IsNotEmpty()
   @IsNumber()
   umidade_ambiente: number;
-
-  @IsNotEmpty()
-  @IsNumber()
-  temperatura: number;
 }
