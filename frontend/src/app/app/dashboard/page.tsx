@@ -3,8 +3,8 @@ import { IrrigationStatusCard } from "@/components/irrigation-status-card"
 import { TemperatureCard } from "@/components/temperature-card"
 import { StatusIndicator } from "@/components/status-indicator"
 import { AlertsList } from "@/components/alerts-list"
-import { ProductionLogForm } from "@/components/production-log-form"
 import { MoistureGraph } from "@/components/moisture-graph"
+import EnvironmentalMetrics from "@/components/environmental-metrics";
 
 export default function DashboardPage() {
     return (
@@ -19,7 +19,7 @@ export default function DashboardPage() {
                 <StatusIndicator />
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <AlertsList />
-                    <ProductionLogForm />
+                    <EnvironmentalMetrics />
                 </div>
                 <MoistureGraph />
             </div>

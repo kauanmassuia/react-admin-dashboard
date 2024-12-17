@@ -11,15 +11,14 @@ import { Calendar } from "@/components/ui/calendar"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { cn } from "@/lib/utils"
 import { format } from "date-fns"
-import { CalendarIcon, MouseIcon as Mushroom } from 'lucide-react'
+import { CalendarIcon } from 'lucide-react'
 
 export function ProductionRecordForm() {
-    const [startDate, setStartDate] = useState<Date>()
-    const [harvestDate, setHarvestDate] = useState<Date>(new Date())
+    const [startDate, setStartDate] = useState<Date | undefined>(undefined)
+    const [harvestDate, setHarvestDate] = useState<Date | undefined>(undefined)
     const [batchId, setBatchId] = useState("")
     const [growingArea, setGrowingArea] = useState("")
-    const [quantity, setQuantity] = useState("")
-    const [quality, setQuality] = useState(3)
+    const [quantities, setQuantities] = useState({ A: "", B: "", C: "" })
     const [notes, setNotes] = useState("")
     const [problems, setProblems] = useState({
         contamination: false,
@@ -27,13 +26,35 @@ export function ProductionRecordForm() {
         colorIssues: false,
     })
 
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault()
+        // Here you would typically send this data to your backend or store locally
+        console.log("Production record submitted:", {
+            startDate,
+            batchId,
+            growingArea,
+            harvestDate,
+            quantities,
+            notes,
+            problems,
+        })
+        // Reset form (in a real app, you might not want to reset all fields)
+        setStartDate(undefined)
+        setBatchId("")
+        setGrowingArea("")
+        setHarvestDate(new Date())
+        setQuantities({ A: "", B: "", C: "" })
+        setNotes("")
+        setProblems({ contamination: false, sizeVariation: false, colorIssues: false })
+    }
+
     return (
         <Card>
             <CardHeader>
                 <CardTitle>Registro de Nova Produção</CardTitle>
             </CardHeader>
             <CardContent>
-                <form className="space-y-4">
+                <form onSubmit={handleSubmit} className="space-y-4">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div className="space-y-2">
                             <label htmlFor="startDate" className="block text-sm font-medium">
@@ -112,43 +133,27 @@ export function ProductionRecordForm() {
                                     <Calendar
                                         mode="single"
                                         selected={harvestDate}
-                                        onSelect={(day) => {
-                                            if (day) setHarvestDate(day);
-                                        }}
+                                        onSelect={setHarvestDate}
                                         initialFocus
                                     />
                                 </PopoverContent>
                             </Popover>
                         </div>
-                        <div className="space-y-2">
-                            <label htmlFor="quantity" className="block text-sm font-medium">
-                                Quantidade Colhida (kg)
-                            </label>
-                            <Input
-                                id="quantity"
-                                type="number"
-                                step="0.01"
-                                value={quantity}
-                                onChange={(e) => setQuantity(e.target.value)}
-                            />
-                        </div>
-                        <div className="space-y-2">
-                            <label className="block text-sm font-medium">Qualidade</label>
-                            <div className="flex space-x-1">
-                                {[1, 2, 3].map((value) => (
-                                    <Button
-                                        key={value}
-                                        type="button"
-                                        variant={quality === value ? "default" : "outline"}
-                                        size="icon"
-                                        onClick={() => setQuality(value)}
-                                    >
-                                        {/*<Mushroom className={cn("h-4 w-4", quality >= value ? "text-yellow-500" : "text-gray-300")} />*/}
-                                        { value === 1 ? "C" : value === 2 ? "B" : "A" }
-                                    </Button>
-                                ))}
+                        {["A", "B", "C"].map((quality) => (
+                            <div key={quality} className="space-y-2">
+                                <label htmlFor={`quantity-${quality}`} className="block text-sm font-medium">
+                                    Quantidade Colhida - Qualidade {quality} (kg)
+                                </label>
+                                <Input
+                                    id={`quantity-${quality}`}
+                                    type="number"
+                                    step="0.01"
+                                    value={quantities[quality as keyof typeof quantities]}
+                                    onChange={(e) => setQuantities(prev => ({ ...prev, [quality]: e.target.value }))}
+                                    placeholder={`Qualidade ${quality}`}
+                                />
                             </div>
-                        </div>
+                        ))}
                     </div>
 
                     <div className="space-y-2">
@@ -199,7 +204,7 @@ export function ProductionRecordForm() {
                         </div>
                     </div>
 
-                    <Button type="submit" className="w-80">Registrar Produção</Button>
+                    <Button type="submit" className="w-full">Registrar Produção</Button>
                 </form>
             </CardContent>
         </Card>
