@@ -1,26 +1,32 @@
 import { Injectable } from '@nestjs/common';
 import { CreateAreaCultivoDto } from './dto/create-area_cultivo.dto';
 import { UpdateAreaCultivoDto } from './dto/update-area_cultivo.dto';
+import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class AreaCultivoService {
-  create(createAreaCultivoDto: CreateAreaCultivoDto) {
-    return 'This action adds a new areaCultivo';
+  constructor(private prisma: PrismaService) {}
+
+  async create(createAreaCultivoDto: CreateAreaCultivoDto) {
+    return this.prisma.area_cultivo.create({ data: createAreaCultivoDto });
   }
 
-  findAll() {
-    return `This action returns all areaCultivo`;
+  async findAll() {
+    return this.prisma.area_cultivo.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} areaCultivo`;
+  async findOne(id: number) {
+    return this.prisma.area_cultivo.findUnique({ where: { id: id } });
   }
 
-  update(id: number, updateAreaCultivoDto: UpdateAreaCultivoDto) {
-    return `This action updates a #${id} areaCultivo`;
+  async update(id: number, updateAreaCultivoDto: UpdateAreaCultivoDto) {
+    return this.prisma.area_cultivo.update({
+      where: { id: id },
+      data: updateAreaCultivoDto,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} areaCultivo`;
+  async remove(id: number) {
+    return this.prisma.area_cultivo.delete({ where: { id: id } });
   }
 }

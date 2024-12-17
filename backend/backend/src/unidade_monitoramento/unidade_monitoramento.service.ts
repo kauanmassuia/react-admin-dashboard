@@ -1,29 +1,43 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUnidadeMonitoramentoDto } from './dto/create-unidade_monitoramento.dto';
 import { UpdateUnidadeMonitoramentoDto } from './dto/update-unidade_monitoramento.dto';
+import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class UnidadeMonitoramentoService {
-  create(createUnidadeMonitoramentoDto: CreateUnidadeMonitoramentoDto) {
-    return 'This action adds a new unidadeMonitoramento';
+  constructor(private prisma: PrismaService) {}
+
+  async create(createUnidadeMonitoramentoDto: CreateUnidadeMonitoramentoDto) {
+    return this.prisma.unidade_monitoramento.create({
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-expect-error
+      data: createUnidadeMonitoramentoDto,
+    });
   }
 
-  findAll() {
-    return `This action returns all unidadeMonitoramento`;
+  async findAll() {
+    return this.prisma.unidade_monitoramento.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} unidadeMonitoramento`;
+  async findOne(id: number) {
+    return this.prisma.unidade_monitoramento.findUnique({ where: { id } });
   }
 
-  update(
+  async update(
     id: number,
     updateUnidadeMonitoramentoDto: UpdateUnidadeMonitoramentoDto,
   ) {
-    return `This action updates a #${id} unidadeMonitoramento`;
+    return this.prisma.unidade_monitoramento.update({
+      where: { id },
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-expect-error
+      data: updateUnidadeMonitoramentoDto,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} unidadeMonitoramento`;
+  async remove(id: number) {
+    return this.prisma.unidade_monitoramento.delete({
+      where: { id },
+    });
   }
 }

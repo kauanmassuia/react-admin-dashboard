@@ -1,26 +1,39 @@
 import { Injectable } from '@nestjs/common';
 import { CreateRegistroProducaoDto } from './dto/create-registro_producao.dto';
 import { UpdateRegistroProducaoDto } from './dto/update-registro_producao.dto';
+import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class RegistroProducaoService {
-  create(createRegistroProducaoDto: CreateRegistroProducaoDto) {
-    return 'This action adds a new registroProducao';
+  constructor(private prisma: PrismaService) {}
+
+  async create(createRegistroProducaoDto: CreateRegistroProducaoDto) {
+    return this.prisma.registro_producao.create({
+      data: createRegistroProducaoDto,
+    });
   }
 
-  findAll() {
-    return `This action returns all registroProducao`;
+  async findAll() {
+    return this.prisma.registro_producao.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} registroProducao`;
+  async findOne(id: number) {
+    return this.prisma.registro_producao.findUnique({ where: { id } });
   }
 
-  update(id: number, updateRegistroProducaoDto: UpdateRegistroProducaoDto) {
-    return `This action updates a #${id} registroProducao`;
+  async update(
+    id: number,
+    updateRegistroProducaoDto: UpdateRegistroProducaoDto,
+  ) {
+    return this.prisma.registro_producao.update({
+      where: { id },
+      data: updateRegistroProducaoDto,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} registroProducao`;
+  async remove(id: number) {
+    return this.prisma.registro_producao.delete({
+      where: { id },
+    });
   }
 }

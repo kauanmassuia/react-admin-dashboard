@@ -12,12 +12,6 @@ enum TipoIrrigacao {
   auto
 }
 
-enum Qualidade {
-  A
-  B
-  C
-}
-
 enum StatusAlerta {
   resolvido
   monitorando
@@ -26,7 +20,8 @@ enum StatusAlerta {
 model produtor {
   id                        Int                         @id @default(autoincrement())
   nome                      String
-  email                     String
+  email                     String                      @unique
+  senha                     String
   telefone                  String
   criado_em                 DateTime                    @default(now())
   ativo                     Boolean
@@ -123,14 +118,15 @@ model lote {
 }
 
 model registro_producao {
-  id                    Int       @id @default(autoincrement())
-  lote                  lote      @relation(fields: [lote_id], references: [id])
+  id                    Int      @id @default(autoincrement())
+  lote                  lote     @relation(fields: [lote_id], references: [id])
   lote_id               Int
-  data                  DateTime  @db.Date
-  quantidade_kg         Float
-  qualidade             Qualidade // "A/B/C"
+  data                  DateTime @db.Date
+  quantidade_tipo_a_kg  Float
+  quantidade_tipo_b_kg  Float
+  quantidade_tipo_c_kg  Float
   problemas_encontrados Json
-  observacoes           String    @db.Text
+  observacoes           String   @db.Text
 }
 
 model alerta {

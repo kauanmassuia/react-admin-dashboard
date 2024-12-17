@@ -1,26 +1,33 @@
 import { Injectable } from '@nestjs/common';
 import { CreateLeituraSensorDto } from './dto/create-leitura_sensor.dto';
 import { UpdateLeituraSensorDto } from './dto/update-leitura_sensor.dto';
+import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class LeituraSensorService {
-  create(createLeituraSensorDto: CreateLeituraSensorDto) {
-    return 'This action adds a new leituraSensor';
+  constructor(private prisma: PrismaService) {
   }
 
-  findAll() {
-    return `This action returns all leituraSensor`;
+  async create(createLeituraSensorDto: CreateLeituraSensorDto) {
+    return this.prisma.leitura_sensor.create({ data: createLeituraSensorDto });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} leituraSensor`;
+  async findAll() {
+    return this.prisma.leitura_sensor.findMany();
   }
 
-  update(id: number, updateLeituraSensorDto: UpdateLeituraSensorDto) {
-    return `This action updates a #${id} leituraSensor`;
+  async findOne(id: number) {
+    return this.prisma.leitura_sensor.findUnique({ where: { id } });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} leituraSensor`;
+  async update(id: number, updateLeituraSensorDto: UpdateLeituraSensorDto) {
+    return this.prisma.leitura_sensor.update({
+      where: { id: id },
+      data: updateLeituraSensorDto,
+    });
+  }
+
+  async remove(id: number) {
+    return this.prisma.leitura_sensor.delete({ where: { id: id } });
   }
 }

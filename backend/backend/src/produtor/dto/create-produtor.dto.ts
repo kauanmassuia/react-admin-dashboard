@@ -10,6 +10,10 @@ export class CreateProdutorDto {
 
   @IsNotEmpty()
   @IsString()
+  senha: string;
+
+  @IsNotEmpty()
+  @IsString()
   telefone: string;
 
   @IsNotEmpty()

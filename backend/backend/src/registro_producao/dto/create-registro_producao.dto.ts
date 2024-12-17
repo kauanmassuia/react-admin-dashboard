@@ -1,6 +1,5 @@
 import {
   IsDate,
-  IsJSON,
   IsNotEmpty,
   IsNumber,
   IsObject,
@@ -20,11 +19,15 @@ export class CreateRegistroProducaoDto {
 
   @IsNotEmpty()
   @IsNumber()
-  quantidade_kg: number;
+  quantidade_tipo_a_kg: number;
 
   @IsNotEmpty()
-  @IsString()
-  qualidade: string;
+  @IsNumber()
+  quantidade_tipo_b_kg: number;
+
+  @IsNotEmpty()
+  @IsNumber()
+  quantidade_tipo_c_kg: number;
 
   @IsNotEmpty()
   @IsObject()

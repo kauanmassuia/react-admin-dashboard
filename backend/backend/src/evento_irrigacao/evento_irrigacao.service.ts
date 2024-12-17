@@ -1,26 +1,40 @@
 import { Injectable } from '@nestjs/common';
 import { CreateEventoIrrigacaoDto } from './dto/create-evento_irrigacao.dto';
 import { UpdateEventoIrrigacaoDto } from './dto/update-evento_irrigacao.dto';
+import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class EventoIrrigacaoService {
-  create(createEventoIrrigacaoDto: CreateEventoIrrigacaoDto) {
-    return 'This action adds a new eventoIrrigacao';
+  constructor(private prisma: PrismaService) {}
+
+  async create(createEventoIrrigacaoDto: CreateEventoIrrigacaoDto) {
+    return this.prisma.evento_irrigacao.create({
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-expect-error
+      data: createEventoIrrigacaoDto,
+    });
   }
 
-  findAll() {
-    return `This action returns all eventoIrrigacao`;
+  async findAll() {
+    return this.prisma.evento_irrigacao.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} eventoIrrigacao`;
+  async findOne(id: number) {
+    return this.prisma.evento_irrigacao.findUnique({ where: { id } });
   }
 
-  update(id: number, updateEventoIrrigacaoDto: UpdateEventoIrrigacaoDto) {
-    return `This action updates a #${id} eventoIrrigacao`;
+  async update(id: number, updateEventoIrrigacaoDto: UpdateEventoIrrigacaoDto) {
+    return this.prisma.evento_irrigacao.update({
+      where: { id },
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-expect-error
+      data: updateEventoIrrigacaoDto,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} eventoIrrigacao`;
+  async remove(id: number) {
+    return this.prisma.evento_irrigacao.delete({
+      where: { id },
+    });
   }
 }

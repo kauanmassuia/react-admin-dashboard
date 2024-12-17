@@ -1,26 +1,34 @@
 import { Injectable } from '@nestjs/common';
 import { CreateSacoCultivoDto } from './dto/create-saco_cultivo.dto';
 import { UpdateSacoCultivoDto } from './dto/update-saco_cultivo.dto';
+import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class SacoCultivoService {
-  create(createSacoCultivoDto: CreateSacoCultivoDto) {
-    return 'This action adds a new sacoCultivo';
+  constructor(private prisma: PrismaService) {}
+
+  async create(createSacoCultivoDto: CreateSacoCultivoDto) {
+    return this.prisma.saco_cultivo.create({ data: createSacoCultivoDto });
   }
 
-  findAll() {
-    return `This action returns all sacoCultivo`;
+  async findAll() {
+    return this.prisma.saco_cultivo.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} sacoCultivo`;
+  async findOne(id: number) {
+    return this.prisma.saco_cultivo.findUnique({ where: { id: id } });
   }
 
-  update(id: number, updateSacoCultivoDto: UpdateSacoCultivoDto) {
-    return `This action updates a #${id} sacoCultivo`;
+  async update(id: number, updateSacoCultivoDto: UpdateSacoCultivoDto) {
+    return this.prisma.saco_cultivo.update({
+      where: { id: id },
+      data: updateSacoCultivoDto,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} sacoCultivo`;
+  async remove(id: number) {
+    return this.prisma.saco_cultivo.delete({
+      where: { id: id },
+    });
   }
 }

@@ -1,26 +1,36 @@
 import { Injectable } from '@nestjs/common';
 import { CreateAlertaDto } from './dto/create-alerta.dto';
 import { UpdateAlertaDto } from './dto/update-alerta.dto';
+import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class AlertaService {
-  create(createAlertaDto: CreateAlertaDto) {
-    return 'This action adds a new alerta';
+  constructor(private prisma: PrismaService) {}
+
+  async create(createAlertaDto: CreateAlertaDto) {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-expect-error
+    return this.prisma.alerta.create({ data: createAlertaDto });
   }
 
-  findAll() {
-    return `This action returns all alerta`;
+  async findAll() {
+    return this.prisma.alerta.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} alerta`;
+  async findOne(id: number) {
+    return this.prisma.alerta.findUnique({ where: { id: id } });
   }
 
-  update(id: number, updateAlertaDto: UpdateAlertaDto) {
-    return `This action updates a #${id} alerta`;
+  async update(id: number, updateAlertaDto: UpdateAlertaDto) {
+    return this.prisma.alerta.update({
+      where: { id: id },
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-expect-error
+      data: updateAlertaDto,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} alerta`;
+  async remove(id: number) {
+    return this.prisma.alerta.delete({ where: { id: id } });
   }
 }

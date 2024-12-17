@@ -1,29 +1,41 @@
 import { Injectable } from '@nestjs/common';
 import { CreateConfiguracoesNotificacaoDto } from './dto/create-configuracoes_notificacao.dto';
 import { UpdateConfiguracoesNotificacaoDto } from './dto/update-configuracoes_notificacao.dto';
+import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class ConfiguracoesNotificacaoService {
-  create(createConfiguracoesNotificacaoDto: CreateConfiguracoesNotificacaoDto) {
-    return 'This action adds a new configuracoesNotificacao';
+  constructor(private prisma: PrismaService) {}
+
+  async create(
+    createConfiguracoesNotificacaoDto: CreateConfiguracoesNotificacaoDto,
+  ) {
+    return this.prisma.configuracoes_notificacao.create({
+      data: createConfiguracoesNotificacaoDto,
+    });
   }
 
-  findAll() {
-    return `This action returns all configuracoesNotificacao`;
+  async findAll() {
+    return this.prisma.configuracoes_notificacao.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} configuracoesNotificacao`;
+  async findOne(id: number) {
+    return this.prisma.configuracoes_notificacao.findUnique({ where: { id } });
   }
 
-  update(
+  async update(
     id: number,
     updateConfiguracoesNotificacaoDto: UpdateConfiguracoesNotificacaoDto,
   ) {
-    return `This action updates a #${id} configuracoesNotificacao`;
+    return this.prisma.configuracoes_notificacao.update({
+      where: { id },
+      data: updateConfiguracoesNotificacaoDto,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} configuracoesNotificacao`;
+  async remove(id: number) {
+    return this.prisma.configuracoes_notificacao.delete({
+      where: { id },
+    });
   }
 }

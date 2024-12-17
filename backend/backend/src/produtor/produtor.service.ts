@@ -7,23 +7,30 @@ import { PrismaService } from '../prisma/prisma.service';
 export class ProdutorService {
   constructor(private prisma: PrismaService) {}
 
-  create(createProdutorDto: CreateProdutorDto) {
-    return 'This action adds a new produtor';
+  async create(createProdutorDto: CreateProdutorDto) {
+    return this.prisma.produtor.create({ data: createProdutorDto });
   }
 
-  findAll() {
-    return `This action returns all produtor`;
+  async findAll() {
+    return this.prisma.produtor.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} produtor`;
+  async findOne(id: number) {
+    return this.prisma.produtor.findUnique({
+      where: { id: id },
+    });
   }
 
-  update(id: number, updateProdutorDto: UpdateProdutorDto) {
-    return `This action updates a #${id} produtor`;
+  async update(id: number, updateProdutorDto: UpdateProdutorDto) {
+    return this.prisma.produtor.update({
+      where: { id: id },
+      data: updateProdutorDto,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} produtor`;
+  async remove(id: number) {
+    return this.prisma.produtor.delete({
+      where: { id: id },
+    });
   }
 }
